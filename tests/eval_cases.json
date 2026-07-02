@@ -1,0 +1,17 @@
+﻿[
+  {
+    "id": "local_slow_travel_chengdu",
+    "question": "成都适合慢旅行吗",
+    "expected": "should_answer_with_sources"
+  },
+  {
+    "id": "realtime_tokyo_disney_hours",
+    "question": "东京迪士尼今天几点开门",
+    "expected": "should_refuse_realtime_without_tool"
+  },
+  {
+    "id": "unknown_local_fact",
+    "question": "资料里有没有巴黎卢浮宫夜场门票价格",
+    "expected": "should_not_hallucinate"
+  }
+]
