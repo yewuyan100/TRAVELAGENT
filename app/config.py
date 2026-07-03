@@ -91,10 +91,12 @@ class Settings:
     min_rerank_score: float = get_float_env("MIN_RERANK_SCORE", 0.42)
     min_result_agreement: float = get_float_env("MIN_RESULT_AGREEMENT", 0.18)
 
-    weather_provider: str = get_env("WEATHER_PROVIDER", "open_meteo") or "open_meteo"
+    weather_provider: str = get_env("WEATHER_PROVIDER", "openmeteo") or "openmeteo"
     weather_api_key: str | None = get_env("WEATHER_API_KEY", get_env("QWEATHER_API_KEY"))
     weather_base_url: str = get_env("WEATHER_BASE_URL", "https://api.open-meteo.com") or "https://api.open-meteo.com"
+    openmeteo_base_url: str = get_env("OPENMETEO_BASE_URL", get_env("WEATHER_BASE_URL", "https://api.open-meteo.com")) or "https://api.open-meteo.com"
     qweather_api_key: str | None = get_env("QWEATHER_API_KEY")
+    qweather_base_url: str = get_env("QWEATHER_BASE_URL", "https://devapi.qweather.com") or "https://devapi.qweather.com"
 
     map_provider: str = get_env("MAP_PROVIDER", "amap") or "amap"
     map_api_key: str | None = get_env("MAP_API_KEY", get_env("AMAP_API_KEY"))

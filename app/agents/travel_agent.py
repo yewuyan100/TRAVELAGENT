@@ -4,7 +4,7 @@ from uuid import uuid4
 
 from app.agents.router import AgentRouter
 from app.rag.pipeline import RAGPipeline, UNCERTAIN_ANSWER, create_pipeline
-from app.schemas import AgentResult, AgentState, SourceRef
+from app.schemas import AgentResult, AgentState, ResponseCard, SourceRef
 from app.tools.map_itinerary_tool import MapItineraryTool
 from app.tools.rag_tool import RagTool, source_dicts_to_refs
 from app.tools.weather_tool import WeatherTool
@@ -37,9 +37,9 @@ class TravelAgent:
         if selected_tool == "rag_tool":
             state.tool_result = self.rag_tool.run(question=state.question, city=state.city, category=state.category)
         elif selected_tool == "weather_tool":
-            state.tool_result = self.weather_tool.run(city=state.city)
+            state.tool_result = self.weather_tool.run(city=state.city, question=state.question)
         elif selected_tool == "map_itinerary_tool":
-            state.tool_result = self.map_itinerary_tool.run(city=state.city, days=state.days, places=state.places)
+            state.tool_result = self.map_itinerary_tool.run(city=state.city, days=state.days, places=state.places, question=state.question)
         else:
             state.tool_result = self._refuse_tool_result(intent)
 
@@ -60,10 +60,12 @@ class TravelAgent:
             confidence=0.0,
             sources=[],
             refused=True,
+            debug={"refused": True},
         )
 
     def _answer_from_rag(self, state: AgentState) -> AgentResult:
         result = state.tool_result
+        refused = bool(result.get("refused", True))
         return AgentResult(
             answer=result.get("answer", UNCERTAIN_ANSWER),
             session_id=state.session_id,
@@ -71,11 +73,14 @@ class TravelAgent:
             selected_tool=state.selected_tool,
             confidence=float(result.get("confidence", 0.0)),
             sources=source_dicts_to_refs(result.get("sources", [])),
-            refused=bool(result.get("refused", True)),
+            cards=[],
+            refused=refused,
+            debug={"refused": refused},
         )
 
     def _answer_from_weather(self, state: AgentState) -> AgentResult:
         result = state.tool_result
+        card = ResponseCard(type="weather", title="天气工具状态", data=result)
         if not result.get("available"):
             message = result.get("message", "实时天气暂时无法确认。")
             if "实时天气暂时无法确认" not in message and "无法查询实时天气" not in message:
@@ -87,7 +92,9 @@ class TravelAgent:
                 selected_tool=state.selected_tool,
                 confidence=0.0,
                 sources=[],
+                cards=[card],
                 refused=True,
+                debug={"refused": True, "tool_available": False},
             )
 
         answer = result.get("summary") or f"{result.get('city', state.city or '')}实时天气已查询成功。"
@@ -99,12 +106,15 @@ class TravelAgent:
             selected_tool=state.selected_tool,
             confidence=0.85,
             sources=[],
+            cards=[ResponseCard(type="weather", title=f"{result.get('city', state.city or '')}天气", data=result)],
             refused=False,
+            debug={"refused": False, "tool_available": True},
         )
 
     def _answer_from_map(self, state: AgentState) -> AgentResult:
         result = state.tool_result
         itinerary = result.get("itinerary", [])
+        card = ResponseCard(type="itinerary", title="行程工具状态", data=result)
         if not itinerary:
             return AgentResult(
                 answer=result.get("message", UNCERTAIN_ANSWER),
@@ -113,7 +123,9 @@ class TravelAgent:
                 selected_tool=state.selected_tool,
                 confidence=0.0,
                 sources=[],
+                cards=[card],
                 refused=True,
+                debug={"refused": True},
             )
 
         lines = [result.get("message", "已生成轻量行程建议。")]
@@ -129,7 +141,9 @@ class TravelAgent:
             selected_tool=state.selected_tool,
             confidence=0.62 if result.get("fallback") else 0.78,
             sources=[],
+            cards=[ResponseCard(type="itinerary", title=f"{state.city or result.get('city', '')}行程建议", data=result)],
             refused=False,
+            debug={"refused": False, "fallback": bool(result.get("fallback"))},
         )
 
     def _refuse_tool_result(self, intent: str) -> dict:

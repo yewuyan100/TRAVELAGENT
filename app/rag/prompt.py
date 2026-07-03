@@ -8,9 +8,10 @@ def build_reference_text(sources: list[SourceRef]) -> str:
 
     lines = []
     for index, source in enumerate(sources, start=1):
+        score = source.score if isinstance(source.score, (int, float)) else 0.0
         lines.append(
-            f"{index}. {source.title}"
-            f"（ID：{source.id}，城市：{source.city}，类别：{source.category}，分数：{source.score:.3f}）"
+            f"{index}. {source.title or '本地知识片段'}"
+            f"（ID：{source.id or ''}，城市：{source.city or ''}，类别：{source.category or ''}，分数：{score:.3f}）"
         )
     return "\n".join(lines)
 

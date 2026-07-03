@@ -16,7 +16,12 @@ export interface ToolInvocation {
 
 export interface RagSource {
   id?: string;
-  title: string;
+  title?: string;
+  city?: string;
+  country?: string;
+  category?: string;
+  content?: string;
+  source_url?: string;
   source?: string;
   score?: number;
   url?: string;
@@ -25,12 +30,28 @@ export interface RagSource {
 
 export interface WeatherData {
   city: string;
+  date?: string;
+  provider?: string;
   condition?: string;
   temperature?: number;
   temp?: number;
+  current_temperature?: number;
+  temp_min?: number;
+  temp_max?: number;
   humidity?: number;
   wind?: string;
   precipitationProbability?: number;
+  rain_probability?: number;
+  travel_advice?: string;
+  summary?: string;
+  forecast?: Array<{
+    date?: string;
+    condition?: string;
+    temp_min?: number;
+    temp_max?: number;
+    rain_probability?: number;
+    wind?: string;
+  }>;
 }
 
 export interface ItineraryStop {
@@ -38,17 +59,37 @@ export interface ItineraryStop {
   title: string;
   description?: string;
   location?: string;
+  address?: string;
+  type?: string;
+  lat?: number;
+  lng?: number;
+  latitude?: number;
+  longitude?: number;
 }
 
 export interface ItineraryDay {
   day: string;
   title?: string;
+  pace?: string;
   stops: ItineraryStop[];
+  routes?: Array<{
+    from?: string;
+    to?: string;
+    path?: Array<[number, number]>;
+    distance_m?: number;
+    duration_min?: number;
+    mode?: string;
+  }>;
+  notes?: string;
 }
 
 export interface MessageMetadata {
   weatherData?: WeatherData;
   itinerary?: ItineraryDay[];
+  intent?: string;
+  selectedTool?: string;
+  confidence?: number;
+  cards?: unknown[];
   [key: string]: unknown;
 }
 

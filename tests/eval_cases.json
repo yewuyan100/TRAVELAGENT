@@ -1,17 +1,115 @@
-﻿[
+[
   {
-    "id": "local_slow_travel_chengdu",
-    "question": "成都适合慢旅行吗",
-    "expected": "should_answer_with_sources"
+    "id": "eval_rag_food_001",
+    "question": "我喜欢美食和慢节奏旅行，推荐去哪里？",
+    "expected_intent_any": ["food_recommendation", "knowledge_qa"],
+    "expected_tool": "rag_tool",
+    "must_include_any": ["成都", "美食", "慢"],
+    "must_not_include": ["股票", "航班价格"],
+    "requires_sources": true,
+    "allow_fallback": true,
+    "notes": "RAG 城市推荐，应推荐成都或知识库中符合条件的城市。"
   },
   {
-    "id": "realtime_tokyo_disney_hours",
-    "question": "东京迪士尼今天几点开门",
-    "expected": "should_refuse_realtime_without_tool"
+    "id": "eval_rag_attraction_001",
+    "question": "第一次去成都，有哪些地方适合慢慢逛？",
+    "expected_intent_any": ["knowledge_qa", "itinerary_plan"],
+    "expected_tool_any": ["rag_tool", "map_itinerary_tool"],
+    "must_include_any": ["成都", "人民公园", "宽窄巷子", "锦里", "熊猫"],
+    "must_not_include": ["不存在的景点", "火星"],
+    "requires_sources": false,
+    "allow_fallback": true,
+    "notes": "RAG 景点推荐或轻量行程均可，但不能编造不存在的景点。"
   },
   {
-    "id": "unknown_local_fact",
-    "question": "资料里有没有巴黎卢浮宫夜场门票价格",
-    "expected": "should_not_hallucinate"
+    "id": "eval_weather_chengdu_001",
+    "question": "成都明天天气怎么样，适合去人民公园吗？",
+    "expected_intent": "realtime_weather",
+    "expected_tool": "weather_tool",
+    "must_include_any": ["天气", "实时", "Open-Meteo", "qweather", "降级", "无法确认", "适合"],
+    "must_not_include": ["系统崩溃", "Traceback"],
+    "requires_sources": false,
+    "allow_fallback": true,
+    "notes": "天气工具，无 Key 或网络不可用时允许 fallback 或清晰提示。"
+  },
+  {
+    "id": "eval_map_itinerary_001",
+    "question": "成都三天两晚怎么安排？",
+    "expected_intent": "itinerary_plan",
+    "expected_tool": "map_itinerary_tool",
+    "must_include_any": ["第 1 天", "Day", "行程", "成都"],
+    "must_not_include": ["精确拥堵", "实时拥堵已确认"],
+    "requires_sources": false,
+    "requires_cards_type": "itinerary",
+    "allow_fallback": true,
+    "notes": "地图/行程工具，应返回 days 或 itinerary 结构。"
+  },
+  {
+    "id": "eval_map_route_001",
+    "question": "从人民公园到宽窄巷子怎么走？",
+    "expected_intent": "map_route_plan",
+    "expected_tool": "map_itinerary_tool",
+    "must_include_any": ["地图", "路线", "规则", "无法", "行程"],
+    "must_not_include": ["精确距离为", "实时拥堵"],
+    "requires_sources": false,
+    "allow_fallback": true,
+    "notes": "没有 AMAP_API_KEY 时不要编造精确距离和耗时。"
+  },
+  {
+    "id": "eval_realtime_opening_hours_001",
+    "question": "东京迪士尼今天几点开门？",
+    "expected_intent": "realtime_opening_hours",
+    "expected_tool": "refuse",
+    "must_include_any": ["无法确认", "实时", "开放时间", "不能用本地知识库编造"],
+    "must_not_include": ["9:00", "10:00", "具体开门时间是"],
+    "requires_sources": false,
+    "allow_fallback": true,
+    "notes": "实时开放时间拒答，不允许用静态 RAG 编造。"
+  },
+  {
+    "id": "eval_realtime_ticket_price_001",
+    "question": "成都大熊猫基地今天门票多少钱？",
+    "expected_intent": "realtime_opening_hours",
+    "expected_tool": "refuse",
+    "must_include_any": ["无法确认", "实时", "票价", "不能用本地知识库编造"],
+    "must_not_include": ["门票是", "¥", "元"],
+    "requires_sources": false,
+    "allow_fallback": true,
+    "notes": "实时票价拒答，应提示需要实时核验。"
+  },
+  {
+    "id": "eval_low_confidence_001",
+    "question": "火星三日游怎么安排？",
+    "expected_intent_any": ["unsupported", "itinerary_plan", "knowledge_qa"],
+    "expected_tool_any": ["refuse", "map_itinerary_tool", "rag_tool"],
+    "must_include_any": ["无法确认", "资料不足", "缺少城市信息", "当前系统暂不支持"],
+    "must_not_include": ["火星酒店", "火星地铁", "火星景区"],
+    "requires_sources": false,
+    "max_confidence": 0.3,
+    "allow_fallback": true,
+    "notes": "低置信度或边界外问题，应拒答或说明资料不足。"
+  },
+  {
+    "id": "eval_unsupported_stock_001",
+    "question": "帮我写一个股票量化交易策略",
+    "expected_intent": "unsupported",
+    "expected_tool": "refuse",
+    "must_include_any": ["暂不支持", "当前系统", "旅游知识库"],
+    "must_not_include": ["买入", "卖出", "收益率"],
+    "requires_sources": false,
+    "allow_fallback": true,
+    "notes": "无关问题拒答，不调用旅游工具。"
+  },
+  {
+    "id": "eval_stream_food_001",
+    "question": "我喜欢美食，推荐一个城市",
+    "endpoint": "stream",
+    "expected_event_types": ["status", "chunk", "metadata", "done"],
+    "expected_tool_any": ["rag_tool"],
+    "must_include_any": ["美食", "成都", "城市"],
+    "must_not_include": ["Traceback"],
+    "requires_sources": false,
+    "allow_fallback": true,
+    "notes": "流式接口 eval，验证 status、chunk、metadata、done。"
   }
 ]

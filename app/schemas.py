@@ -13,22 +13,31 @@ class ChatRequest(BaseModel):
 
 
 class SourceRef(BaseModel):
-    id: str = ""
-    title: str = "本地知识片段"
-    city: str = "未知城市"
-    category: str = "unknown"
-    score: float = 0.0
+    id: str | None = None
+    title: str | None = "本地知识片段"
+    city: str | None = None
+    country: str | None = None
+    category: str | None = None
+    score: float | None = None
+    content: str | None = None
+    source_url: str | None = None
     tags: list[str] = Field(default_factory=list)
+
+
+class ResponseCard(BaseModel):
+    type: str
+    title: str | None = None
+    data: dict[str, Any] = Field(default_factory=dict)
 
 
 class ChatResponse(BaseModel):
     answer: str
-    session_id: str
     intent: str
     selected_tool: str
     confidence: float
     sources: list[SourceRef] = Field(default_factory=list)
-    refused: bool
+    cards: list[ResponseCard] = Field(default_factory=list)
+    debug: dict[str, Any] | None = None
 
 
 @dataclass(frozen=True)
@@ -110,15 +119,17 @@ class AgentResult:
     selected_tool: str
     confidence: float = 0.0
     sources: list[SourceRef] = field(default_factory=list)
+    cards: list[ResponseCard] = field(default_factory=list)
     refused: bool = False
+    debug: dict[str, Any] | None = None
 
     def to_response(self) -> ChatResponse:
         return ChatResponse(
             answer=self.answer,
-            session_id=self.session_id,
             intent=self.intent,
             selected_tool=self.selected_tool,
             confidence=float(self.confidence),
             sources=self.sources,
-            refused=bool(self.refused),
+            cards=self.cards,
+            debug=self.debug,
         )

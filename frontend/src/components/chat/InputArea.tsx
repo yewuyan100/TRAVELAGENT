@@ -1,6 +1,6 @@
 ﻿import { useState } from "react";
 import { SendHorizontal } from "lucide-react";
-import { sendStreamingChat } from "@/api/chatService";
+import { sendChatMessage } from "@/api/chatService";
 import { useChatStore } from "@/store/useChatStore";
 
 export function InputArea() {
@@ -13,7 +13,7 @@ export function InputArea() {
     setValue("");
 
     try {
-      await sendStreamingChat(query);
+      await sendChatMessage(query);
     } catch {
       // chatService already updates the assistant placeholder with failed status.
     }
@@ -47,7 +47,7 @@ export function InputArea() {
         </button>
       </div>
       <div className="mx-auto mt-2 max-w-4xl text-xs text-slate-400">
-        Enter 发送，Shift + Enter 换行。当前默认请求 /api/chat/stream。
+        Enter 发送，Shift + Enter 换行。优先使用 /api/chat/stream，失败时自动回退到 /api/chat。
       </div>
     </footer>
   );

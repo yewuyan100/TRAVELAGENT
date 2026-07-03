@@ -6,11 +6,23 @@ from app.rag.retriever import Retriever
 
 
 FOOD_KEYWORDS = ["美食", "吃", "小吃", "餐厅", "火锅", "菜", "好吃"]
-WEATHER_KEYWORDS = ["天气", "下雨", "气温", "温度", "冷", "热", "明天", "今天适合", "适合去"]
+WEATHER_KEYWORDS = ["天气", "下雨", "降雨", "气温", "温度", "冷", "热", "明天", "后天", "带伞", "雨具", "适合出门", "适不适合出门"]
 OPENING_HOURS_KEYWORDS = ["几点开门", "几点关门", "营业时间", "开放时间", "闭园", "开园", "票价", "门票"]
-MAP_ROUTE_KEYWORDS = ["几天怎么玩", "怎么玩", "三日游", "两日游", "一日游", "路线", "顺序", "怎么安排", "从", "到", "怎么走"]
+MAP_ROUTE_KEYWORDS = ["几天怎么玩", "怎么玩", "三日游", "两日游", "一日游", "路线", "顺序", "排序", "景点排序", "怎么安排", "Day 1", "Day1", "第1天", "从", "到", "怎么走"]
 TRANSPORT_KEYWORDS = ["交通", "地铁", "公交", "打车", "自驾", "机场", "火车站", "高铁"]
-UNSUPPORTED_KEYWORDS = ["酒店价格", "航班价格", "机票价格", "实时房价", "用户登录", "注册"]
+UNSUPPORTED_KEYWORDS = [
+    "酒店价格",
+    "航班价格",
+    "机票价格",
+    "实时房价",
+    "用户登录",
+    "注册",
+    "股票",
+    "量化交易",
+    "交易策略",
+    "基金",
+    "证券",
+]
 CATEGORY_BY_INTENT = {
     "food_recommendation": "food",
     "transport_advice": "transport",

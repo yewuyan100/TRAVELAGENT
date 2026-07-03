@@ -16,6 +16,10 @@ export function MessageItem({ message }: MessageItemProps) {
   const isUser = message.role === "user";
   const weatherData = message.metadata?.weatherData;
   const itinerary = message.metadata?.itinerary;
+  const intent = message.metadata?.intent;
+  const selectedTool = message.metadata?.selectedTool;
+  const confidence = message.metadata?.confidence;
+  const streamStatus = message.metadata?.streamStatus;
 
   return (
     <article className={cn("flex", isUser ? "justify-end" : "justify-start")}>
@@ -32,6 +36,15 @@ export function MessageItem({ message }: MessageItemProps) {
         </div>
 
         <ToolIndicator tools={message.toolInvocations} />
+        {!isUser && (intent || selectedTool || typeof confidence === "number") && (
+          <div className="mt-3 flex flex-wrap gap-2 text-xs text-slate-500">
+            {intent && <span className="rounded-full bg-slate-100 px-2 py-1">意图：{String(intent)}</span>}
+            {selectedTool && <span className="rounded-full bg-slate-100 px-2 py-1">工具：{String(selectedTool)}</span>}
+            {typeof confidence === "number" && (
+              <span className="rounded-full bg-slate-100 px-2 py-1">置信度：{confidence.toFixed(2)}</span>
+            )}
+          </div>
+        )}
         <RagSection sources={message.ragSources} />
         <WeatherCard data={weatherData} />
         <ItineraryCard itinerary={itinerary} />
@@ -45,7 +58,7 @@ export function MessageItem({ message }: MessageItemProps) {
         )}
 
         {message.status === "streaming" && (
-          <div className="mt-2 text-xs text-slate-500">生成中...</div>
+          <div className="mt-2 text-xs text-slate-500">{String(streamStatus || "生成中...")}</div>
         )}
         {message.status === "failed" && message.error && (
           <div className="mt-3 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-xs text-red-700">

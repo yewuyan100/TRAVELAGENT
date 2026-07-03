@@ -27,11 +27,14 @@ def source_refs_from_results(results: list[dict]) -> list[SourceRef]:
 
         score = float(result.get("final_score", result.get("rerank_score", result.get("score", 0.0))) or 0.0)
         source = SourceRef(
-            id=str(metadata.get("id", "")),
+            id=str(metadata.get("id", "")) or None,
             title=title,
-            city=metadata.get("city", "未知城市"),
-            category=metadata.get("category", "unknown"),
+            city=metadata.get("city"),
+            country=metadata.get("country"),
+            category=metadata.get("category"),
             score=score,
+            content=result.get("chunk"),
+            source_url=metadata.get("source_url"),
             tags=[str(tag) for tag in tags],
         )
         source_key = (source.id, source.title, source.city, source.category)
@@ -45,7 +48,7 @@ def source_refs_from_results(results: list[dict]) -> list[SourceRef]:
 def append_sources(answer: str, sources: list[SourceRef]) -> str:
     if not sources or "依据：" in answer:
         return answer
-    source_line = "依据：" + " / ".join(source.title for source in sources)
+    source_line = "依据：" + " / ".join(source.title or "本地知识片段" for source in sources)
     return f"{answer.rstrip()}\n\n{source_line}"
 
 
@@ -166,7 +169,11 @@ class RAGPipeline:
 
 def create_pipeline() -> RAGPipeline:
     store = load_vector_store()
-    embedding_model = EmbeddingModel()
+    try:
+        embedding_model = EmbeddingModel()
+    except Exception as exc:
+        logger.warning("[RAG] Embedding 模型加载失败，降级为 BM25-only 检索：%s", exc)
+        embedding_model = None
     retriever = Retriever(store=store, embedding_model=embedding_model)
     generator = LLMGenerator()
     return RAGPipeline(retriever=retriever, generator=generator)

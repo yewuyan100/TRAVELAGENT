@@ -246,7 +246,7 @@ class LRUQueryCache:
 
 
 class Retriever:
-    def __init__(self, store: VectorStore, embedding_model: EmbeddingModel):
+    def __init__(self, store: VectorStore, embedding_model: EmbeddingModel | None):
         self.store = store
         self.embedding_model = embedding_model
         self.available_cities = self._collect_available_cities()
@@ -270,8 +270,12 @@ class Retriever:
         logger.info("[RAG] Query Analysis | %s", analysis.to_dict())
 
         candidate_k = max(settings.candidate_k, top_k * 6)
-        query_vector = self.embedding_model.embed([question])
-        vector_results = self.store.search(query_vector=query_vector, top_k=candidate_k)
+        if self.embedding_model is None:
+            logger.warning("[RAG] Embedding 模型不可用，本次检索降级为 BM25-only")
+            vector_results = []
+        else:
+            query_vector = self.embedding_model.embed([question])
+            vector_results = self.store.search(query_vector=query_vector, top_k=candidate_k)
         bm25_results = self.bm25.search(query=question, top_k=candidate_k)
 
         candidates = self._merge_candidates(vector_results, bm25_results)
