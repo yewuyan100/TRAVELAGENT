@@ -499,19 +499,6 @@ Eval 覆盖：
 
 当前 eval 是轻量规则校验，不做复杂语义评分。
 
-## 面试讲解思路
-
-可以按下面思路讲：
-
-- 这个项目不是单纯 ChatBot，而是一个带 RAG 和工具路由的 AI Travel Agent。
-- RAG 负责稳定知识回答，减少幻觉。
-- metadata filter 和 low confidence reject 用于提升可靠性。
-- 天气和地图属于实时工具，不应该依赖静态知识库回答。
-- Agent Router 根据 intent 选择 `rag_tool`、`weather_tool`、`map_itinerary_tool`。
-- 前端通过 `answer`、`intent`、`selected_tool`、`confidence`、`sources` 展示 Agent 决策过程。
-- 伪流式先验证前后端流式链路，后续再接 LLM 原生 streaming。
-- 部署使用 Nginx + systemd，比只跑本地 demo 更接近企业真实上线方式。
-
 ## 当前限制
 
 - 流式还是伪流式。
