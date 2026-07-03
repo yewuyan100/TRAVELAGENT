@@ -3,9 +3,11 @@
 import logging
 
 from app.config import settings
+from app.rag.embeddings import create_embedding_provider
 from app.rag.generator import LLMGenerator
-from app.rag.loader import EmbeddingModel, load_vector_store
+from app.rag.loader import load_vector_store
 from app.rag.prompt import build_prompt
+from app.rag.reranker import create_rerank_provider
 from app.rag.retriever import Retriever
 from app.schemas import RAGResult, RetrievalReport, SourceRef
 
@@ -26,6 +28,7 @@ def source_refs_from_results(results: list[dict]) -> list[SourceRef]:
             tags = []
 
         score = float(result.get("final_score", result.get("rerank_score", result.get("score", 0.0))) or 0.0)
+        rerank_score = result.get("rerank_score")
         source = SourceRef(
             id=str(metadata.get("id", "")) or None,
             title=title,
@@ -33,8 +36,12 @@ def source_refs_from_results(results: list[dict]) -> list[SourceRef]:
             country=metadata.get("country"),
             category=metadata.get("category"),
             score=score,
+            vector_score=_optional_float(result.get("vector_score", result.get("faiss_score"))),
+            bm25_score=_optional_float(result.get("bm25_score")),
+            rerank_score=_optional_float(rerank_score),
             content=result.get("chunk"),
             source_url=metadata.get("source_url"),
+            freshness=metadata.get("freshness"),
             tags=[str(tag) for tag in tags],
         )
         source_key = (source.id, source.title, source.city, source.category)
@@ -58,6 +65,15 @@ def realtime_refusal() -> str:
         "这个问题包含今天、现在、营业时间、票价、天气等实时信号，"
         "当前项目还没有接入实时搜索或官方接口，所以不能只凭本地知识库硬答。"
     )
+
+
+def _optional_float(value) -> float | None:
+    if value is None:
+        return None
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
 
 
 class RAGPipeline:
@@ -169,11 +185,71 @@ class RAGPipeline:
 
 def create_pipeline() -> RAGPipeline:
     store = load_vector_store()
+    embedding_provider = None
+    vector_enabled = _index_matches_current_embedding(store.index_meta)
+
+    if not vector_enabled:
+        logger.warning("[RAG] 当前 Embedding 配置与索引不一致或缺少元数据，本次服务降级为 BM25-only")
+
     try:
-        embedding_model = EmbeddingModel()
+        if settings.rag_enable_vector and vector_enabled and store.index is not None:
+            if _embedding_key_ready():
+                embedding_provider = create_embedding_provider()
+            else:
+                logger.warning("[RAG] EMBEDDING_API_KEY 未配置，向量检索关闭并降级为 BM25-only")
     except Exception as exc:
-        logger.warning("[RAG] Embedding 模型加载失败，降级为 BM25-only 检索：%s", exc)
-        embedding_model = None
-    retriever = Retriever(store=store, embedding_model=embedding_model)
+        logger.warning("[RAG] Embedding Provider 初始化失败，降级为 BM25-only 检索：%s", exc)
+        embedding_provider = None
+
+    try:
+        rerank_provider = create_rerank_provider()
+    except Exception as exc:
+        logger.warning("[RAG] Reranker Provider 初始化失败，保留原始召回顺序：%s", exc)
+        rerank_provider = None
+
+    retriever = Retriever(
+        store=store,
+        embedding_model=embedding_provider,
+        rerank_provider=rerank_provider,
+        vector_enabled=vector_enabled,
+    )
     generator = LLMGenerator()
     return RAGPipeline(retriever=retriever, generator=generator)
+
+
+def _index_matches_current_embedding(index_meta: dict) -> bool:
+    if not settings.rag_enable_vector:
+        return False
+    if not index_meta:
+        return False
+
+    expected = {
+        "embedding_provider": settings.embedding_provider,
+        "embedding_model": settings.embedding_model,
+        "embedding_dimension": settings.embedding_dimension,
+    }
+    actual = {
+        "embedding_provider": index_meta.get("embedding_provider"),
+        "embedding_model": index_meta.get("embedding_model"),
+        "embedding_dimension": index_meta.get("embedding_dimension"),
+    }
+    try:
+        actual_dimension = int(actual["embedding_dimension"] or 0)
+    except (TypeError, ValueError):
+        actual_dimension = 0
+
+    matches = (
+        str(actual["embedding_provider"]).lower() == str(expected["embedding_provider"]).lower()
+        and str(actual["embedding_model"]) == str(expected["embedding_model"])
+        and actual_dimension == int(expected["embedding_dimension"])
+    )
+    if not matches:
+        logger.warning("[RAG] 索引配置不匹配，expected=%s actual=%s", expected, actual)
+    return matches
+
+
+def _embedding_key_ready() -> bool:
+    provider = settings.embedding_provider.lower().replace("-", "_")
+    if provider in {"dashscope", "bailian", "aliyun"}:
+        return bool(settings.embedding_api_key)
+    return True

@@ -1,9 +1,11 @@
 ﻿from __future__ import annotations
 
 from collections import Counter
+from datetime import datetime, timezone
 
 from app.config import settings
-from app.rag.loader import EmbeddingModel, VectorStore, load_knowledge_items
+from app.rag.embeddings import create_embedding_provider, embeddings_to_numpy
+from app.rag.loader import VectorStore, load_knowledge_items
 
 
 REQUIRED_FIELDS = {
@@ -40,6 +42,8 @@ METADATA_FIELDS = [
     "suitable_for",
     "updated_at",
     "source_type",
+    "source_url",
+    "freshness",
 ]
 
 
@@ -110,12 +114,21 @@ def build_index() -> dict:
     if not chunk_items:
         raise ValueError("没有生成任何 chunk，请检查 travel_knowledge.json 内容")
 
-    embedding_model = EmbeddingModel()
-    embeddings = embedding_model.embed([item["content"] for item in chunk_items])
+    embedding_provider = create_embedding_provider()
+    embeddings = embeddings_to_numpy(embedding_provider.embed([item["content"] for item in chunk_items]))
 
-    store = VectorStore(index_path=settings.index_path, chunks_path=settings.chunks_path)
+    store = VectorStore(
+        index_path=settings.index_path,
+        chunks_path=settings.chunks_path,
+        index_meta_path=settings.index_meta_path,
+    )
     store.build(embeddings, chunk_items)
-    store.save()
+    index_meta = {
+        **embedding_provider.meta(),
+        "chunk_count": len(chunk_items),
+        "created_at": datetime.now(timezone.utc).isoformat(),
+    }
+    store.save(index_meta=index_meta)
 
     return {
         "knowledge_path": str(settings.knowledge_json_path),
@@ -123,6 +136,10 @@ def build_index() -> dict:
         "chunk_count": len(chunk_items),
         "index_path": str(settings.index_path),
         "chunks_path": str(settings.chunks_path),
+        "index_meta_path": str(settings.index_meta_path),
+        "embedding_provider": index_meta["embedding_provider"],
+        "embedding_model": index_meta["embedding_model"],
+        "embedding_dimension": index_meta["embedding_dimension"],
     }
 
 
@@ -132,8 +149,12 @@ def main() -> None:
     print("原始知识库：", result["knowledge_path"])
     print("知识条目数量：", result["knowledge_count"])
     print("生成 Chunk 数量：", result["chunk_count"])
+    print("Embedding Provider：", result["embedding_provider"])
+    print("Embedding Model：", result["embedding_model"])
+    print("Embedding Dimension：", result["embedding_dimension"])
     print("索引保存位置：", result["index_path"])
     print("Chunk 保存位置：", result["chunks_path"])
+    print("索引元数据：", result["index_meta_path"])
 
 
 if __name__ == "__main__":

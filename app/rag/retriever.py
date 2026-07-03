@@ -7,7 +7,9 @@ import re
 from collections import Counter, OrderedDict, defaultdict
 
 from app.config import settings
-from app.rag.loader import EmbeddingModel, VectorStore
+from app.rag.embeddings import EmbeddingProvider, embeddings_to_numpy
+from app.rag.loader import VectorStore
+from app.rag.reranker import RerankProvider
 from app.schemas import QueryAnalysis, RetrievalReport
 
 
@@ -246,9 +248,17 @@ class LRUQueryCache:
 
 
 class Retriever:
-    def __init__(self, store: VectorStore, embedding_model: EmbeddingModel | None):
+    def __init__(
+        self,
+        store: VectorStore,
+        embedding_model: EmbeddingProvider | None,
+        rerank_provider: RerankProvider | None = None,
+        vector_enabled: bool = True,
+    ):
         self.store = store
         self.embedding_model = embedding_model
+        self.rerank_provider = rerank_provider
+        self.vector_enabled = vector_enabled
         self.available_cities = self._collect_available_cities()
         self.available_tags = self._collect_available_tags()
         self.query_analyzer = QueryAnalyzer(self.available_cities, self.available_tags)
@@ -269,13 +279,8 @@ class Retriever:
         analysis = self.analyze_query(question)
         logger.info("[RAG] Query Analysis | %s", analysis.to_dict())
 
-        candidate_k = max(settings.candidate_k, top_k * 6)
-        if self.embedding_model is None:
-            logger.warning("[RAG] Embedding 模型不可用，本次检索降级为 BM25-only")
-            vector_results = []
-        else:
-            query_vector = self.embedding_model.embed([question])
-            vector_results = self.store.search(query_vector=query_vector, top_k=candidate_k)
+        candidate_k = max(settings.candidate_k, top_k * 6, settings.rerank_top_k)
+        vector_results = self._vector_search(question, candidate_k)
         bm25_results = self.bm25.search(query=question, top_k=candidate_k)
 
         candidates = self._merge_candidates(vector_results, bm25_results)
@@ -294,6 +299,23 @@ class Retriever:
         )
         self.query_cache.set(cache_key, report)
         return report
+
+    def _vector_search(self, question: str, candidate_k: int) -> list[dict]:
+        if not settings.rag_enable_vector or not self.vector_enabled:
+            logger.info("[RAG] 向量检索未启用或索引配置不匹配，本次使用关键词检索")
+            return []
+        if self.embedding_model is None:
+            logger.warning("[RAG] Embedding Provider 不可用，本次检索降级为 BM25-only")
+            return []
+
+        try:
+            query_vector = embeddings_to_numpy(self.embedding_model.embed([question]))
+            return self.store.search(query_vector=query_vector, top_k=candidate_k)
+        except Exception as exc:
+            logger.warning("[RAG] 向量检索失败，本次降级为 BM25-only：%s", exc)
+            if settings.rag_fallback_to_keyword:
+                return []
+            raise
 
     def retrieve(self, question: str, top_k: int = settings.top_k) -> list[dict]:
         return self.retrieve_with_report(question=question, top_k=top_k).results
@@ -349,6 +371,7 @@ class Retriever:
             merged[chunk_index] = {
                 **result,
                 "faiss_score": float(result.get("score", 0.0)),
+                "vector_score": float(result.get("score", 0.0)),
                 "bm25_score": 0.0,
                 "retrieval_sources": ["faiss"],
             }
@@ -360,6 +383,7 @@ class Retriever:
                 current = self._result_from_chunk_index(chunk_index)
                 current.update({
                     "faiss_score": 0.0,
+                    "vector_score": 0.0,
                     "bm25_score": float(result.get("bm25_score", 0.0)),
                     "retrieval_sources": ["bm25"],
                 })
@@ -412,41 +436,57 @@ class Retriever:
         return len(query_tokens.intersection(chunk_tokens)) / len(query_tokens)
 
     def _rerank(self, candidates: list[dict], analysis: QueryAnalysis) -> list[dict]:
-        reranked = []
+        prepared = self._prepare_candidates(candidates, analysis)
+        if not self.rerank_provider:
+            return prepared
+
+        rerank_input = prepared[: max(settings.rerank_top_k, settings.rerank_top_n)]
+        try:
+            return self.rerank_provider.rerank(analysis.question, rerank_input)
+        except Exception as exc:
+            logger.warning("[RAG] Reranker 调用失败，保留原始召回顺序：%s", exc)
+            if settings.rerank_fallback_to_original_order:
+                return prepared
+            raise
+
+    def _prepare_candidates(self, candidates: list[dict], analysis: QueryAnalysis) -> list[dict]:
+        prepared = []
         for result in candidates:
             metadata_bonus, match_info = self._metadata_bonus(result, analysis)
             overlap_score = self._lexical_overlap_score(analysis.question, result.get("chunk", ""))
             agreement_bonus = 0.08 if result.get("faiss_norm", 0.0) > 0 and result.get("bm25_norm", 0.0) > 0 else 0.0
-            rerank_score = 0.58 * result.get("hybrid_score", 0.0) + 0.22 * overlap_score + metadata_bonus + agreement_bonus
+            rule_score = 0.58 * result.get("hybrid_score", 0.0) + 0.22 * overlap_score + metadata_bonus + agreement_bonus
 
             new_result = dict(result)
             new_result["overlap_score"] = overlap_score
-            new_result["rerank_score"] = float(rerank_score)
-            new_result["final_score"] = float(rerank_score)
+            new_result["rule_score"] = float(rule_score)
+            new_result["final_score"] = float(result.get("hybrid_score", 0.0))
             new_result["match_info"] = match_info
-            reranked.append(new_result)
+            prepared.append(new_result)
 
-        return sorted(reranked, key=lambda item: item.get("rerank_score", 0.0), reverse=True)
+        return sorted(prepared, key=lambda item: item.get("hybrid_score", 0.0), reverse=True)
 
     def _confidence(self, results: list[dict], candidate_count: int) -> tuple[bool, str, dict]:
         if not results:
             return False, "没有召回任何资料", {"best_score": 0.0}
 
         top = results[0]
-        best_rerank = float(top.get("rerank_score", 0.0))
+        best_final_score = float(top.get("final_score", top.get("score", 0.0)) or 0.0)
         best_component = max(float(top.get("faiss_norm", 0.0)), float(top.get("bm25_norm", 0.0)))
         agreement = min(float(top.get("faiss_norm", 0.0)), float(top.get("bm25_norm", 0.0)))
         confident = (
             candidate_count > 0
-            and best_rerank >= settings.min_rerank_score
+            and best_final_score >= settings.min_rerank_score
             and best_component >= settings.min_retrieval_score
             and (agreement >= settings.min_result_agreement or float(top.get("bm25_norm", 0.0)) >= 0.80)
         )
 
         diagnostics = {
-            "best_rerank_score": best_rerank,
+            "best_rerank_score": best_final_score,
+            "best_final_score": best_final_score,
             "best_component_score": best_component,
             "agreement_score": agreement,
+            "rerank_enabled": bool(self.rerank_provider),
             "candidate_count": candidate_count,
             "thresholds": {
                 "min_rerank_score": settings.min_rerank_score,
@@ -458,5 +498,5 @@ class Retriever:
         if confident:
             return True, "召回分数、重排分数和召回一致性达到阈值", diagnostics
 
-        reason = f"检索置信度不足：重排分={best_rerank:.3f}，组件分={best_component:.3f}，一致性={agreement:.3f}"
+        reason = f"检索置信度不足：最终分={best_final_score:.3f}，组件分={best_component:.3f}，一致性={agreement:.3f}"
         return False, reason, diagnostics

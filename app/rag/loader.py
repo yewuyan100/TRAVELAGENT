@@ -1,39 +1,31 @@
 ﻿from __future__ import annotations
 
 import json
-from functools import lru_cache
+import logging
 from pathlib import Path
 
 import faiss
 import numpy as np
-from sentence_transformers import SentenceTransformer
 
 from app.config import settings
 
 
-class EmbeddingModel:
-    def __init__(self, model_name: str = settings.embedding_model, cache_size: int = settings.embedding_cache_size):
-        self.model = SentenceTransformer(model_name)
-        self._embed_one_cached = lru_cache(maxsize=cache_size)(self._embed_one)
-
-    def _embed_one(self, text: str) -> tuple[float, ...]:
-        vector = self.model.encode([text], normalize_embeddings=True)[0]
-        return tuple(float(value) for value in vector)
-
-    def embed(self, texts: list[str]) -> np.ndarray:
-        vectors = [self._embed_one_cached(str(text)) for text in texts]
-        return np.array(vectors, dtype="float32")
-
-    def clear_cache(self) -> None:
-        self._embed_one_cached.cache_clear()
+logger = logging.getLogger(__name__)
 
 
 class VectorStore:
-    def __init__(self, index_path: Path = settings.index_path, chunks_path: Path = settings.chunks_path):
+    def __init__(
+        self,
+        index_path: Path = settings.index_path,
+        chunks_path: Path = settings.chunks_path,
+        index_meta_path: Path = settings.index_meta_path,
+    ):
         self.index_path = Path(index_path)
         self.chunks_path = Path(chunks_path)
+        self.index_meta_path = Path(index_meta_path)
         self.index = None
         self.chunks: list[dict | str] = []
+        self.index_meta: dict = {}
 
     def build(self, embeddings: np.ndarray, chunks: list[dict | str]) -> None:
         embeddings = np.array(embeddings).astype("float32")
@@ -42,9 +34,53 @@ class VectorStore:
         self.index.add(embeddings)
         self.chunks = chunks
 
+    def save(self, index_meta: dict | None = None) -> None:
+        if self.index is None:
+            raise ValueError("当前没有 Index 可以保存。")
+
+        self.index_path.parent.mkdir(parents=True, exist_ok=True)
+        self.chunks_path.parent.mkdir(parents=True, exist_ok=True)
+        self.index_meta_path.parent.mkdir(parents=True, exist_ok=True)
+        faiss.write_index(self.index, str(self.index_path))
+
+        with open(self.chunks_path, "w", encoding="utf-8") as file:
+            json.dump(self.chunks, file, ensure_ascii=False, indent=2)
+
+        if index_meta is not None:
+            self.index_meta = index_meta
+            with open(self.index_meta_path, "w", encoding="utf-8") as file:
+                json.dump(index_meta, file, ensure_ascii=False, indent=2)
+
+    def load(self) -> None:
+        self.index = None
+        self.chunks = []
+        self.index_meta = {}
+
+        if self.chunks_path.exists():
+            with open(self.chunks_path, "r", encoding="utf-8") as file:
+                self.chunks = json.load(file)
+        else:
+            logger.warning("[RAG] chunks 文件不存在：%s", self.chunks_path)
+
+        if self.index_meta_path.exists():
+            with open(self.index_meta_path, "r", encoding="utf-8") as file:
+                self.index_meta = json.load(file)
+        else:
+            logger.warning("[RAG] index_meta 文件不存在，将按关键词检索降级：%s", self.index_meta_path)
+
+        if self.index_path.exists():
+            try:
+                self.index = faiss.read_index(str(self.index_path))
+            except Exception as exc:
+                logger.warning("[RAG] FAISS index 读取失败，将按关键词检索降级：%s", exc)
+                self.index = None
+        else:
+            logger.warning("[RAG] FAISS index 文件不存在，将按关键词检索降级：%s", self.index_path)
+
     def search(self, query_vector: np.ndarray, top_k: int = 3) -> list[dict]:
         if self.index is None:
-            raise ValueError("FAISS Index 尚未建立，请先 build() 或 load()。")
+            logger.warning("[RAG] FAISS index 不可用，本次跳过向量检索")
+            return []
 
         query_vector = np.array(query_vector).astype("float32")
         distances, indices = self.index.search(query_vector, top_k)
@@ -70,22 +106,6 @@ class VectorStore:
             })
 
         return results
-
-    def save(self) -> None:
-        if self.index is None:
-            raise ValueError("当前没有 Index 可以保存。")
-
-        self.index_path.parent.mkdir(parents=True, exist_ok=True)
-        self.chunks_path.parent.mkdir(parents=True, exist_ok=True)
-        faiss.write_index(self.index, str(self.index_path))
-
-        with open(self.chunks_path, "w", encoding="utf-8") as file:
-            json.dump(self.chunks, file, ensure_ascii=False, indent=2)
-
-    def load(self) -> None:
-        self.index = faiss.read_index(str(self.index_path))
-        with open(self.chunks_path, "r", encoding="utf-8") as file:
-            self.chunks = json.load(file)
 
 
 def load_knowledge_items(path: Path = settings.knowledge_json_path) -> list[dict]:

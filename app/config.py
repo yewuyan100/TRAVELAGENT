@@ -38,6 +38,13 @@ def get_float_env(name: str, default: float) -> float:
         raise RuntimeError(f"配置 {name} 必须是浮点数，当前值是：{value}") from exc
 
 
+def get_bool_env(name: str, default: bool) -> bool:
+    value = get_env(name)
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "y", "on"}
+
+
 def get_path_env(*names: str, default: Path | str, base_dir: Path = PROJECT_ROOT) -> Path:
     value = None
     for name in names:
@@ -60,10 +67,13 @@ class Settings:
     llm_base_url: str = get_env("LLM_BASE_URL", get_env("DEEPSEEK_BASE_URL", "https://api.deepseek.com")) or "https://api.deepseek.com"
     llm_model: str = get_env("LLM_MODEL", get_env("DEEPSEEK_MODEL", "deepseek-v4-flash")) or "deepseek-v4-flash"
 
-    embedding_provider: str = get_env("EMBEDDING_PROVIDER", "local") or "local"
+    embedding_provider: str = get_env("EMBEDDING_PROVIDER", "dashscope") or "dashscope"
     embedding_api_key: str | None = get_env("EMBEDDING_API_KEY")
-    embedding_base_url: str | None = get_env("EMBEDDING_BASE_URL")
-    embedding_model: str = get_env("EMBEDDING_MODEL", "BAAI/bge-m3") or "BAAI/bge-m3"
+    embedding_base_url: str | None = get_env("EMBEDDING_API_BASE_URL", get_env("EMBEDDING_BASE_URL"))
+    embedding_model: str = get_env("EMBEDDING_API_MODEL", get_env("EMBEDDING_MODEL", "text-embedding-v4")) or "text-embedding-v4"
+    embedding_dimension: int = get_int_env("EMBEDDING_DIMENSION", 1024)
+    embedding_batch_size: int = get_int_env("EMBEDDING_BATCH_SIZE", 10)
+    embedding_timeout: float = get_float_env("EMBEDDING_TIMEOUT", 30.0)
     embedding_cache_size: int = get_int_env("EMBEDDING_CACHE_SIZE", 512)
 
     knowledge_json_path: Path = get_path_env(
@@ -80,6 +90,10 @@ class Settings:
         "CHUNKS_PATH",
         default=PROJECT_ROOT / "data" / "chunks.json",
     )
+    index_meta_path: Path = get_path_env(
+        "INDEX_META_PATH",
+        default=PROJECT_ROOT / "data" / "index_meta.json",
+    )
 
     top_k: int = get_int_env("TOP_K", 3)
     candidate_k: int = get_int_env("CANDIDATE_K", 20)
@@ -90,6 +104,18 @@ class Settings:
     min_retrieval_score: float = get_float_env("MIN_RETRIEVAL_SCORE", 0.35)
     min_rerank_score: float = get_float_env("MIN_RERANK_SCORE", 0.42)
     min_result_agreement: float = get_float_env("MIN_RESULT_AGREEMENT", 0.18)
+    rag_enable_vector: bool = get_bool_env("RAG_ENABLE_VECTOR", True)
+    rag_fallback_to_keyword: bool = get_bool_env("RAG_FALLBACK_TO_KEYWORD", True)
+
+    rerank_enable: bool = get_bool_env("RERANK_ENABLE", True)
+    rerank_provider: str = get_env("RERANK_PROVIDER", "dashscope") or "dashscope"
+    rerank_api_key: str | None = get_env("RERANK_API_KEY", get_env("EMBEDDING_API_KEY"))
+    rerank_base_url: str | None = get_env("RERANK_API_BASE_URL")
+    rerank_model: str = get_env("RERANK_MODEL", "qwen3-rerank") or "qwen3-rerank"
+    rerank_top_k: int = get_int_env("RERANK_TOP_K", 20)
+    rerank_top_n: int = get_int_env("RERANK_TOP_N", 5)
+    rerank_timeout: float = get_float_env("RERANK_TIMEOUT", 30.0)
+    rerank_fallback_to_original_order: bool = get_bool_env("RERANK_FALLBACK_TO_ORIGINAL_ORDER", True)
 
     weather_provider: str = get_env("WEATHER_PROVIDER", "openmeteo") or "openmeteo"
     weather_api_key: str | None = get_env("WEATHER_API_KEY", get_env("QWEATHER_API_KEY"))

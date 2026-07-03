@@ -19,8 +19,12 @@ class SourceRef(BaseModel):
     country: str | None = None
     category: str | None = None
     score: float | None = None
+    vector_score: float | None = None
+    bm25_score: float | None = None
+    rerank_score: float | None = None
     content: str | None = None
     source_url: str | None = None
+    freshness: str | None = None
     tags: list[str] = Field(default_factory=list)
 
 
