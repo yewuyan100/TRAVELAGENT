@@ -1,0 +1,20 @@
+[
+  {
+    "city": "成都",
+    "province": "四川",
+    "country": "中国",
+    "priority": 1
+  },
+  {
+    "city": "重庆",
+    "province": "重庆",
+    "country": "中国",
+    "priority": 1
+  },
+  {
+    "city": "杭州",
+    "province": "浙江",
+    "country": "中国",
+    "priority": 1
+  }
+]

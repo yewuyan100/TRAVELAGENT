@@ -34,13 +34,71 @@ class ResponseCard(BaseModel):
     data: dict[str, Any] = Field(default_factory=dict)
 
 
+class FoodRecommendation(BaseModel):
+    name: str
+    reason: str | None = None
+    area: str | None = None
+    tags: list[str] = Field(default_factory=list)
+
+
+class TravelTip(BaseModel):
+    title: str
+    content: str
+
+
+class ItineraryStop(BaseModel):
+    name: str
+    type: str | None = None
+    description: str | None = None
+    lat: float | None = None
+    lng: float | None = None
+
+
+class ItineraryDayPlan(BaseModel):
+    day: int
+    theme: str | None = None
+    pace: str | None = None
+    spots: list[ItineraryStop] = Field(default_factory=list)
+    routes: list[dict[str, Any]] = Field(default_factory=list)
+    notes: str | None = None
+
+
+class TaskPlanStep(BaseModel):
+    step: str
+    tool: str
+    reason: str
+
+
+class ToolUsage(BaseModel):
+    tool: str
+    status: str
+    summary: str
+
+
+class RetrievedChunk(BaseModel):
+    chunk_id: str | None = None
+    title: str | None = None
+    city: str | None = None
+    category: str | None = None
+    score: float | None = None
+    content_preview: str | None = None
+
+
 class ChatResponse(BaseModel):
     answer: str
     intent: str
+    city: str | None = None
+    itinerary: list[ItineraryDayPlan] = Field(default_factory=list)
+    food_recommendations: list[FoodRecommendation] = Field(default_factory=list)
+    tips: list[TravelTip] = Field(default_factory=list)
+    sources: list[SourceRef] = Field(default_factory=list)
     selected_tool: str
     confidence: float
-    sources: list[SourceRef] = Field(default_factory=list)
     cards: list[ResponseCard] = Field(default_factory=list)
+    task_plan: list[TaskPlanStep] = Field(default_factory=list)
+    tools_used: list[ToolUsage] = Field(default_factory=list)
+    retrieved_chunks: list[RetrievedChunk] = Field(default_factory=list)
+    metadata: dict[str, Any] = Field(default_factory=dict)
     debug: dict[str, Any] | None = None
 
 
@@ -121,9 +179,17 @@ class AgentResult:
     session_id: str
     intent: str
     selected_tool: str
+    city: str | None = None
+    itinerary: list[ItineraryDayPlan] = field(default_factory=list)
+    food_recommendations: list[FoodRecommendation] = field(default_factory=list)
+    tips: list[TravelTip] = field(default_factory=list)
     confidence: float = 0.0
     sources: list[SourceRef] = field(default_factory=list)
     cards: list[ResponseCard] = field(default_factory=list)
+    task_plan: list[TaskPlanStep] = field(default_factory=list)
+    tools_used: list[ToolUsage] = field(default_factory=list)
+    retrieved_chunks: list[RetrievedChunk] = field(default_factory=list)
+    metadata: dict[str, Any] = field(default_factory=dict)
     refused: bool = False
     debug: dict[str, Any] | None = None
 
@@ -131,9 +197,17 @@ class AgentResult:
         return ChatResponse(
             answer=self.answer,
             intent=self.intent,
+            city=self.city,
+            itinerary=self.itinerary,
+            food_recommendations=self.food_recommendations,
+            tips=self.tips,
             selected_tool=self.selected_tool,
             confidence=float(self.confidence),
             sources=self.sources,
             cards=self.cards,
+            task_plan=self.task_plan,
+            tools_used=self.tools_used,
+            retrieved_chunks=self.retrieved_chunks,
+            metadata=self.metadata,
             debug=self.debug,
         )

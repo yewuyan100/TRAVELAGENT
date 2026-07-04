@@ -1,15 +1,45 @@
-﻿import { apiClient, API_BASE_URL } from "@/api/client";
-import type { RagSource } from "@/types/chat";
+import { apiClient, API_BASE_URL } from "@/api/client";
+import type {
+  FoodRecommendation,
+  ItineraryDay,
+  RagSource,
+  RetrievedChunk,
+  TaskPlanStep,
+  ToolUsage,
+  TravelTip,
+  WeatherData,
+} from "@/types/chat";
 
 export { apiClient, API_BASE_URL };
 
 export interface ChatApiResponse {
   answer: string;
   intent: string;
+  city?: string;
+  itinerary?: Array<{
+    day: number;
+    theme?: string;
+    pace?: string;
+    spots?: Array<{
+      name: string;
+      type?: string;
+      description?: string;
+      lat?: number;
+      lng?: number;
+    }>;
+    routes?: ItineraryDay["routes"];
+    notes?: string;
+  }>;
+  food_recommendations?: FoodRecommendation[];
+  tips?: TravelTip[];
   selected_tool: string;
   confidence: number;
   sources: RagSource[];
   cards: unknown[];
+  task_plan?: TaskPlanStep[];
+  tools_used?: ToolUsage[];
+  retrieved_chunks?: RetrievedChunk[];
+  metadata?: Record<string, unknown>;
   debug?: Record<string, unknown>;
 }
 
@@ -23,6 +53,14 @@ export type ChatStreamEvent =
       confidence: number;
       sources: RagSource[];
       cards?: unknown[];
+      city?: string;
+      itinerary?: ChatApiResponse["itinerary"];
+      food_recommendations?: FoodRecommendation[];
+      tips?: TravelTip[];
+      task_plan?: TaskPlanStep[];
+      tools_used?: ToolUsage[];
+      retrieved_chunks?: RetrievedChunk[];
+      metadata?: Record<string, unknown>;
       debug?: Record<string, unknown>;
     }
   | { type: "error"; message: string }
@@ -40,6 +78,16 @@ function apiUrl(path: string): string {
 
 export async function sendChat(question: string): Promise<ChatApiResponse> {
   const response = await apiClient.post<ChatApiResponse>(apiPath("/chat"), { question });
+  return response.data;
+}
+
+export async function getHealth(): Promise<{ status: string; service?: string }> {
+  const response = await apiClient.get<{ status: string; service?: string }>("/health");
+  return response.data;
+}
+
+export async function getWeather(city: string): Promise<WeatherData> {
+  const response = await apiClient.get<WeatherData>(apiPath("/weather"), { params: { city } });
   return response.data;
 }
 

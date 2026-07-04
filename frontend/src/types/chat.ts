@@ -4,7 +4,7 @@ export type MessageStatus = "idle" | "streaming" | "completed" | "failed";
 
 export type DisplayType = "text" | "weather" | "itinerary" | "travel";
 
-export type ToolStatus = "running" | "success" | "failed";
+export type ToolStatus = "running" | "success" | "failed" | "fallback";
 
 export interface ToolInvocation {
   id: string;
@@ -12,6 +12,27 @@ export interface ToolInvocation {
   label?: string;
   status: ToolStatus;
   message?: string;
+}
+
+export interface TaskPlanStep {
+  step: string;
+  tool: string;
+  reason: string;
+}
+
+export interface ToolUsage {
+  tool: string;
+  status: "success" | "failed" | "fallback" | string;
+  summary: string;
+}
+
+export interface RetrievedChunk {
+  chunk_id?: string;
+  title?: string;
+  city?: string;
+  category?: string;
+  score?: number;
+  content_preview?: string;
 }
 
 export interface RagSource {
@@ -57,6 +78,7 @@ export interface WeatherData {
 export interface ItineraryStop {
   time?: string;
   title: string;
+  name?: string;
   description?: string;
   location?: string;
   address?: string;
@@ -70,6 +92,7 @@ export interface ItineraryStop {
 export interface ItineraryDay {
   day: string;
   title?: string;
+  theme?: string;
   pace?: string;
   stops: ItineraryStop[];
   routes?: Array<{
@@ -83,13 +106,32 @@ export interface ItineraryDay {
   notes?: string;
 }
 
+export interface FoodRecommendation {
+  name: string;
+  reason?: string;
+  area?: string;
+  tags?: string[];
+}
+
+export interface TravelTip {
+  title: string;
+  content: string;
+}
+
 export interface MessageMetadata {
   weatherData?: WeatherData;
   itinerary?: ItineraryDay[];
+  foodRecommendations?: FoodRecommendation[];
+  tips?: TravelTip[];
+  city?: string;
   intent?: string;
   selectedTool?: string;
   confidence?: number;
   cards?: unknown[];
+  taskPlan?: TaskPlanStep[];
+  toolsUsed?: ToolUsage[];
+  retrievedChunks?: RetrievedChunk[];
+  traceMetadata?: Record<string, unknown>;
   [key: string]: unknown;
 }
 
@@ -104,4 +146,11 @@ export interface ChatMessage {
   metadata?: MessageMetadata;
   error?: string;
   createdAt: number;
+}
+
+export interface ConversationHistory {
+  id: string;
+  title: string;
+  messages: ChatMessage[];
+  updatedAt: number;
 }

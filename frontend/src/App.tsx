@@ -1,12 +1,10 @@
-﻿import { MessageList } from "@/components/chat/MessageList";
-import { InputArea } from "@/components/chat/InputArea";
+import { ChatWorkspace } from "@/components/chat/ChatWorkspace";
 import { AppLayout } from "@/components/layout/AppLayout";
 
 export default function App() {
   return (
     <AppLayout>
-      <MessageList />
-      <InputArea />
+      <ChatWorkspace />
     </AppLayout>
   );
 }

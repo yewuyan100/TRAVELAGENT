@@ -1,0 +1,1628 @@
+{
+  "embedding_provider": "dashscope",
+  "embedding_model": "text-embedding-v4",
+  "embedding_dimension": 1024,
+  "chunk_count": 102,
+  "document_count": 102,
+  "created_at": "2026-07-04T05:04:08.927947+00:00",
+  "source_documents_path": "D:\\AgentProject\\TRAVELAGENT\\data\\processed\\documents.jsonl",
+  "source_chunks_path": "D:\\AgentProject\\TRAVELAGENT\\data\\chunks\\chunks.jsonl",
+  "chunks": [
+    {
+      "chunk_id": "chengdu_overview_001_chunk_0001",
+      "doc_id": "chengdu_overview_001",
+      "title": "成都旅行整体特点",
+      "city": "成都",
+      "category": "overview",
+      "tags": [
+        "美食",
+        "慢生活",
+        "熊猫",
+        "休闲",
+        "城市漫游"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "chengdu_attractions_001_chunk_0001",
+      "doc_id": "chengdu_attractions_001",
+      "title": "成都核心景点推荐",
+      "city": "成都",
+      "category": "attractions",
+      "tags": [
+        "大熊猫",
+        "武侯祠",
+        "锦里",
+        "宽窄巷子",
+        "青城山"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "chengdu_food_001_chunk_0001",
+      "doc_id": "chengdu_food_001",
+      "title": "成都特色美食体验",
+      "city": "成都",
+      "category": "food",
+      "tags": [
+        "火锅",
+        "川菜",
+        "串串香",
+        "小吃",
+        "麻辣"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "chengdu_itinerary_001_chunk_0001",
+      "doc_id": "chengdu_itinerary_001",
+      "title": "成都三日经典路线建议",
+      "city": "成都",
+      "category": "itinerary",
+      "tags": [
+        "三日游",
+        "经典路线",
+        "市区+周边",
+        "文化美食"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "chengdu_transport_001_chunk_0001",
+      "doc_id": "chengdu_transport_001",
+      "title": "成都交通出行指南",
+      "city": "成都",
+      "category": "transport",
+      "tags": [
+        "机场",
+        "地铁",
+        "高铁",
+        "公交",
+        "市内出行"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "chengdu_tips_001_chunk_0001",
+      "doc_id": "chengdu_tips_001",
+      "title": "成都旅行实用建议",
+      "city": "成都",
+      "category": "tips",
+      "tags": [
+        "季节",
+        "避坑",
+        "预算",
+        "安全",
+        "适应人群"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "chongqing_overview_001_chunk_0001",
+      "doc_id": "chongqing_overview_001",
+      "title": "重庆旅行整体特点",
+      "city": "重庆",
+      "category": "overview",
+      "tags": [
+        "山城",
+        "魔幻",
+        "夜景",
+        "火锅",
+        "8D城市"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "chongqing_attractions_001_chunk_0001",
+      "doc_id": "chongqing_attractions_001",
+      "title": "重庆核心景点推荐",
+      "city": "重庆",
+      "category": "attractions",
+      "tags": [
+        "洪崖洞",
+        "解放碑",
+        "轻轨",
+        "长江索道",
+        "磁器口"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "chongqing_food_001_chunk_0001",
+      "doc_id": "chongqing_food_001",
+      "title": "重庆特色美食体验",
+      "city": "重庆",
+      "category": "food",
+      "tags": [
+        "火锅",
+        "小面",
+        "江湖菜",
+        "串串",
+        "麻辣"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "chongqing_itinerary_001_chunk_0001",
+      "doc_id": "chongqing_itinerary_001",
+      "title": "重庆三日经典路线建议",
+      "city": "重庆",
+      "category": "itinerary",
+      "tags": [
+        "三日游",
+        "都市观光",
+        "夜景",
+        "美食"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "chongqing_transport_001_chunk_0001",
+      "doc_id": "chongqing_transport_001",
+      "title": "重庆交通出行指南",
+      "city": "重庆",
+      "category": "transport",
+      "tags": [
+        "机场",
+        "轨道交通",
+        "出租车",
+        "索道",
+        "导航"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "chongqing_tips_001_chunk_0001",
+      "doc_id": "chongqing_tips_001",
+      "title": "重庆旅行实用建议",
+      "city": "重庆",
+      "category": "tips",
+      "tags": [
+        "季节",
+        "避坑",
+        "步行",
+        "预算",
+        "安全"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "beijing_overview_001_chunk_0001",
+      "doc_id": "beijing_overview_001",
+      "title": "北京旅行整体特点",
+      "city": "北京",
+      "category": "overview",
+      "tags": [
+        "历史",
+        "文化",
+        "皇家建筑",
+        "胡同",
+        "首都"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "beijing_attractions_001_chunk_0001",
+      "doc_id": "beijing_attractions_001",
+      "title": "北京核心景点推荐",
+      "city": "北京",
+      "category": "attractions",
+      "tags": [
+        "故宫",
+        "长城",
+        "天坛",
+        "天安门",
+        "颐和园"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "beijing_food_001_chunk_0001",
+      "doc_id": "beijing_food_001",
+      "title": "北京特色美食体验",
+      "city": "北京",
+      "category": "food",
+      "tags": [
+        "北京烤鸭",
+        "涮羊肉",
+        "炸酱面",
+        "豆汁",
+        "宫廷小吃"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "beijing_itinerary_001_chunk_0001",
+      "doc_id": "beijing_itinerary_001",
+      "title": "北京三日经典路线建议",
+      "city": "北京",
+      "category": "itinerary",
+      "tags": [
+        "三日游",
+        "皇城文化",
+        "胡同",
+        "皇家园林"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "beijing_transport_001_chunk_0001",
+      "doc_id": "beijing_transport_001",
+      "title": "北京交通出行指南",
+      "city": "北京",
+      "category": "transport",
+      "tags": [
+        "机场",
+        "地铁",
+        "公交",
+        "高铁",
+        "共享单车"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "beijing_tips_001_chunk_0001",
+      "doc_id": "beijing_tips_001",
+      "title": "北京旅行实用建议",
+      "city": "北京",
+      "category": "tips",
+      "tags": [
+        "季节",
+        "门票预约",
+        "避坑",
+        "步行",
+        "预算"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "shanghai_overview_001_chunk_0001",
+      "doc_id": "shanghai_overview_001",
+      "title": "上海旅行整体特点",
+      "city": "上海",
+      "category": "overview",
+      "tags": [
+        "都市",
+        "近代建筑",
+        "外滩",
+        "摩天大楼",
+        "小资"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "shanghai_attractions_001_chunk_0001",
+      "doc_id": "shanghai_attractions_001",
+      "title": "上海核心景点推荐",
+      "city": "上海",
+      "category": "attractions",
+      "tags": [
+        "外滩",
+        "东方明珠",
+        "南京路",
+        "豫园",
+        "新天地"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "shanghai_food_001_chunk_0001",
+      "doc_id": "shanghai_food_001",
+      "title": "上海特色美食体验",
+      "city": "上海",
+      "category": "food",
+      "tags": [
+        "本帮菜",
+        "小笼包",
+        "生煎",
+        "蟹粉",
+        "精致餐饮"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "shanghai_itinerary_001_chunk_0001",
+      "doc_id": "shanghai_itinerary_001",
+      "title": "上海三日经典路线建议",
+      "city": "上海",
+      "category": "itinerary",
+      "tags": [
+        "三日游",
+        "都市风情",
+        "外滩",
+        "购物",
+        "文艺"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "shanghai_transport_001_chunk_0001",
+      "doc_id": "shanghai_transport_001",
+      "title": "上海交通出行指南",
+      "city": "上海",
+      "category": "transport",
+      "tags": [
+        "机场",
+        "地铁",
+        "高铁",
+        "磁悬浮",
+        "公交"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "shanghai_tips_001_chunk_0001",
+      "doc_id": "shanghai_tips_001",
+      "title": "上海旅行实用建议",
+      "city": "上海",
+      "category": "tips",
+      "tags": [
+        "季节",
+        "消费水平",
+        "避坑",
+        "天气",
+        "适合人群"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "hangzhou_overview_001_chunk_0001",
+      "doc_id": "hangzhou_overview_001",
+      "title": "杭州旅行整体特点",
+      "city": "杭州",
+      "category": "overview",
+      "tags": [
+        "西湖",
+        "江南",
+        "茶文化",
+        "园林",
+        "诗意"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "hangzhou_attractions_001_chunk_0001",
+      "doc_id": "hangzhou_attractions_001",
+      "title": "杭州核心景点推荐",
+      "city": "杭州",
+      "category": "attractions",
+      "tags": [
+        "西湖",
+        "灵隐寺",
+        "雷峰塔",
+        "断桥",
+        "龙井村"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "hangzhou_food_001_chunk_0001",
+      "doc_id": "hangzhou_food_001",
+      "title": "杭州特色美食体验",
+      "city": "杭州",
+      "category": "food",
+      "tags": [
+        "杭帮菜",
+        "龙井虾仁",
+        "东坡肉",
+        "西湖醋鱼",
+        "定胜糕"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "hangzhou_itinerary_001_chunk_0001",
+      "doc_id": "hangzhou_itinerary_001",
+      "title": "杭州三日经典路线建议",
+      "city": "杭州",
+      "category": "itinerary",
+      "tags": [
+        "三日游",
+        "西湖经典",
+        "茶文化",
+        "禅意之旅"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "hangzhou_transport_001_chunk_0001",
+      "doc_id": "hangzhou_transport_001",
+      "title": "杭州交通出行指南",
+      "city": "杭州",
+      "category": "transport",
+      "tags": [
+        "机场",
+        "高铁",
+        "地铁",
+        "公交",
+        "自行车"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "hangzhou_tips_001_chunk_0001",
+      "doc_id": "hangzhou_tips_001",
+      "title": "杭州旅行实用建议",
+      "city": "杭州",
+      "category": "tips",
+      "tags": [
+        "季节",
+        "旺季",
+        "消费",
+        "避坑",
+        "适合人群"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "xian_overview_001_chunk_0001",
+      "doc_id": "xian_overview_001",
+      "title": "西安旅行整体特点",
+      "city": "西安",
+      "category": "overview",
+      "tags": [
+        "古都",
+        "历史",
+        "兵马俑",
+        "城墙",
+        "美食"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "xian_attractions_001_chunk_0001",
+      "doc_id": "xian_attractions_001",
+      "title": "西安核心景点推荐",
+      "city": "西安",
+      "category": "attractions",
+      "tags": [
+        "兵马俑",
+        "古城墙",
+        "大雁塔",
+        "钟楼",
+        "回民街"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "xian_food_001_chunk_0001",
+      "doc_id": "xian_food_001",
+      "title": "西安特色美食体验",
+      "city": "西安",
+      "category": "food",
+      "tags": [
+        "羊肉泡馍",
+        "肉夹馍",
+        "凉皮",
+        "面食",
+        "回民街"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "xian_itinerary_001_chunk_0001",
+      "doc_id": "xian_itinerary_001",
+      "title": "西安三日经典路线建议",
+      "city": "西安",
+      "category": "itinerary",
+      "tags": [
+        "三日游",
+        "历史探寻",
+        "古城体验",
+        "美食之旅"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "xian_transport_001_chunk_0001",
+      "doc_id": "xian_transport_001",
+      "title": "西安交通出行指南",
+      "city": "西安",
+      "category": "transport",
+      "tags": [
+        "机场",
+        "高铁",
+        "地铁",
+        "公交",
+        "旅游专线"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "xian_tips_001_chunk_0001",
+      "doc_id": "xian_tips_001",
+      "title": "西安旅行实用建议",
+      "city": "西安",
+      "category": "tips",
+      "tags": [
+        "季节",
+        "防晒",
+        "预算",
+        "讲解",
+        "适合人群"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "nanjing_overview_001_chunk_0001",
+      "doc_id": "nanjing_overview_001",
+      "title": "南京旅行整体特点",
+      "city": "南京",
+      "category": "overview",
+      "tags": [
+        "六朝古都",
+        "民国风情",
+        "梧桐",
+        "历史",
+        "文化"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "nanjing_attractions_001_chunk_0001",
+      "doc_id": "nanjing_attractions_001",
+      "title": "南京核心景点推荐",
+      "city": "南京",
+      "category": "attractions",
+      "tags": [
+        "中山陵",
+        "明孝陵",
+        "夫子庙",
+        "秦淮河",
+        "总统府"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "nanjing_food_001_chunk_0001",
+      "doc_id": "nanjing_food_001",
+      "title": "南京特色美食体验",
+      "city": "南京",
+      "category": "food",
+      "tags": [
+        "盐水鸭",
+        "鸭血粉丝汤",
+        "汤包",
+        "秦淮小吃",
+        "糖芋苗"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "nanjing_itinerary_001_chunk_0001",
+      "doc_id": "nanjing_itinerary_001",
+      "title": "南京三日经典路线建议",
+      "city": "南京",
+      "category": "itinerary",
+      "tags": [
+        "三日游",
+        "民国文化",
+        "明文化",
+        "秦淮风情"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "nanjing_transport_001_chunk_0001",
+      "doc_id": "nanjing_transport_001",
+      "title": "南京交通出行指南",
+      "city": "南京",
+      "category": "transport",
+      "tags": [
+        "机场",
+        "高铁",
+        "地铁",
+        "公交",
+        "步行"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "nanjing_tips_001_chunk_0001",
+      "doc_id": "nanjing_tips_001",
+      "title": "南京旅行实用建议",
+      "city": "南京",
+      "category": "tips",
+      "tags": [
+        "季节",
+        "秋景",
+        "费用",
+        "历史文化准备",
+        "安全"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "suzhou_overview_001_chunk_0001",
+      "doc_id": "suzhou_overview_001",
+      "title": "苏州旅行整体特点",
+      "city": "苏州",
+      "category": "overview",
+      "tags": [
+        "江南水乡",
+        "园林",
+        "昆曲",
+        "丝绸",
+        "文艺"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "suzhou_attractions_001_chunk_0001",
+      "doc_id": "suzhou_attractions_001",
+      "title": "苏州核心景点推荐",
+      "city": "苏州",
+      "category": "attractions",
+      "tags": [
+        "拙政园",
+        "留园",
+        "虎丘",
+        "平江路",
+        "周庄"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "suzhou_food_001_chunk_0001",
+      "doc_id": "suzhou_food_001",
+      "title": "苏州特色美食体验",
+      "city": "苏州",
+      "category": "food",
+      "tags": [
+        "苏帮菜",
+        "松鼠桂鱼",
+        "生煎",
+        "糕点",
+        "时令"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "suzhou_itinerary_001_chunk_0001",
+      "doc_id": "suzhou_itinerary_001",
+      "title": "苏州三日经典路线建议",
+      "city": "苏州",
+      "category": "itinerary",
+      "tags": [
+        "三日游",
+        "园林",
+        "水乡",
+        "文化漫步"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "suzhou_transport_001_chunk_0001",
+      "doc_id": "suzhou_transport_001",
+      "title": "苏州交通出行指南",
+      "city": "苏州",
+      "category": "transport",
+      "tags": [
+        "高铁",
+        "地铁",
+        "公交",
+        "水上交通",
+        "市区出行"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "suzhou_tips_001_chunk_0001",
+      "doc_id": "suzhou_tips_001",
+      "title": "苏州旅行实用建议",
+      "city": "苏州",
+      "category": "tips",
+      "tags": [
+        "季节",
+        "园林欣赏",
+        "避开人潮",
+        "文化尊重",
+        "穿搭"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "guangzhou_overview_001_chunk_0001",
+      "doc_id": "guangzhou_overview_001",
+      "title": "广州旅行整体特点",
+      "city": "广州",
+      "category": "overview",
+      "tags": [
+        "美食",
+        "花城",
+        "岭南文化",
+        "商贸",
+        "早茶"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "guangzhou_attractions_001_chunk_0001",
+      "doc_id": "guangzhou_attractions_001",
+      "title": "广州核心景点推荐",
+      "city": "广州",
+      "category": "attractions",
+      "tags": [
+        "广州塔",
+        "陈家祠",
+        "沙面",
+        "白云山",
+        "北京路"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "guangzhou_food_001_chunk_0001",
+      "doc_id": "guangzhou_food_001",
+      "title": "广州特色美食体验",
+      "city": "广州",
+      "category": "food",
+      "tags": [
+        "早茶",
+        "粤菜",
+        "烧腊",
+        "肠粉",
+        "糖水"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "guangzhou_itinerary_001_chunk_0001",
+      "doc_id": "guangzhou_itinerary_001",
+      "title": "广州三日经典路线建议",
+      "city": "广州",
+      "category": "itinerary",
+      "tags": [
+        "三日游",
+        "美食之旅",
+        "城市风光",
+        "岭南文化"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "guangzhou_transport_001_chunk_0001",
+      "doc_id": "guangzhou_transport_001",
+      "title": "广州交通出行指南",
+      "city": "广州",
+      "category": "transport",
+      "tags": [
+        "机场",
+        "高铁",
+        "地铁",
+        "公交",
+        "珠江"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "guangzhou_tips_001_chunk_0001",
+      "doc_id": "guangzhou_tips_001",
+      "title": "广州旅行实用建议",
+      "city": "广州",
+      "category": "tips",
+      "tags": [
+        "季节",
+        "雨季",
+        "美食预算",
+        "文化尊重",
+        "避暑"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "shenzhen_overview_001_chunk_0001",
+      "doc_id": "shenzhen_overview_001",
+      "title": "深圳旅行整体特点",
+      "city": "深圳",
+      "category": "overview",
+      "tags": [
+        "现代化",
+        "创新",
+        "滨海",
+        "主题公园",
+        "年轻"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "shenzhen_attractions_001_chunk_0001",
+      "doc_id": "shenzhen_attractions_001",
+      "title": "深圳核心景点推荐",
+      "city": "深圳",
+      "category": "attractions",
+      "tags": [
+        "世界之窗",
+        "欢乐谷",
+        "大梅沙",
+        "深圳湾",
+        "市民中心"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "shenzhen_food_001_chunk_0001",
+      "doc_id": "shenzhen_food_001",
+      "title": "深圳特色美食体验",
+      "city": "深圳",
+      "category": "food",
+      "tags": [
+        "粤菜",
+        "海鲜",
+        "沙井生蚝",
+        "椰子鸡",
+        "东南亚风味"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "shenzhen_itinerary_001_chunk_0001",
+      "doc_id": "shenzhen_itinerary_001",
+      "title": "深圳三日经典路线建议",
+      "city": "深圳",
+      "category": "itinerary",
+      "tags": [
+        "三日游",
+        "主题公园",
+        "滨海休闲",
+        "都市探访"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "shenzhen_transport_001_chunk_0001",
+      "doc_id": "shenzhen_transport_001",
+      "title": "深圳交通出行指南",
+      "city": "深圳",
+      "category": "transport",
+      "tags": [
+        "机场",
+        "高铁",
+        "地铁",
+        "公交",
+        "口岸"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "shenzhen_tips_001_chunk_0001",
+      "doc_id": "shenzhen_tips_001",
+      "title": "深圳旅行实用建议",
+      "city": "深圳",
+      "category": "tips",
+      "tags": [
+        "季节",
+        "防晒",
+        "主题公园攻略",
+        "消费",
+        "口岸提示"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "xiamen_overview_001_chunk_0001",
+      "doc_id": "xiamen_overview_001",
+      "title": "厦门旅行整体特点",
+      "city": "厦门",
+      "category": "overview",
+      "tags": [
+        "海岛",
+        "文艺",
+        "咖啡",
+        "海上花园",
+        "闽南"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "xiamen_attractions_001_chunk_0001",
+      "doc_id": "xiamen_attractions_001",
+      "title": "厦门核心景点推荐",
+      "city": "厦门",
+      "category": "attractions",
+      "tags": [
+        "鼓浪屿",
+        "环岛路",
+        "南普陀",
+        "中山路",
+        "胡里山炮台"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "xiamen_food_001_chunk_0001",
+      "doc_id": "xiamen_food_001",
+      "title": "厦门特色美食体验",
+      "city": "厦门",
+      "category": "food",
+      "tags": [
+        "沙茶面",
+        "海蛎煎",
+        "土笋冻",
+        "花生汤",
+        "海鲜"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "xiamen_itinerary_001_chunk_0001",
+      "doc_id": "xiamen_itinerary_001",
+      "title": "厦门三日经典路线建议",
+      "city": "厦门",
+      "category": "itinerary",
+      "tags": [
+        "三日游",
+        "海岛度假",
+        "文艺之旅",
+        "休闲慢行"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "xiamen_transport_001_chunk_0001",
+      "doc_id": "xiamen_transport_001",
+      "title": "厦门交通出行指南",
+      "city": "厦门",
+      "category": "transport",
+      "tags": [
+        "机场",
+        "高铁",
+        "公交",
+        "轮渡",
+        "自行车"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "xiamen_tips_001_chunk_0001",
+      "doc_id": "xiamen_tips_001",
+      "title": "厦门旅行实用建议",
+      "city": "厦门",
+      "category": "tips",
+      "tags": [
+        "季节",
+        "台风",
+        "鼓浪屿预约",
+        "防晒",
+        "预算"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "qingdao_overview_001_chunk_0001",
+      "doc_id": "qingdao_overview_001",
+      "title": "青岛旅行整体特点",
+      "city": "青岛",
+      "category": "overview",
+      "tags": [
+        "海滨",
+        "啤酒",
+        "红瓦绿树",
+        "欧式建筑",
+        "帆船"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "qingdao_attractions_001_chunk_0001",
+      "doc_id": "qingdao_attractions_001",
+      "title": "青岛核心景点推荐",
+      "city": "青岛",
+      "category": "attractions",
+      "tags": [
+        "八大关",
+        "栈桥",
+        "崂山",
+        "奥帆中心",
+        "天主教堂"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "qingdao_food_001_chunk_0001",
+      "doc_id": "qingdao_food_001",
+      "title": "青岛特色美食体验",
+      "city": "青岛",
+      "category": "food",
+      "tags": [
+        "海鲜",
+        "啤酒",
+        "鲅鱼水饺",
+        "辣炒蛤蜊",
+        "锅贴"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "qingdao_itinerary_001_chunk_0001",
+      "doc_id": "qingdao_itinerary_001",
+      "title": "青岛三日经典路线建议",
+      "city": "青岛",
+      "category": "itinerary",
+      "tags": [
+        "三日游",
+        "海滨漫步",
+        "欧式建筑",
+        "山海风光"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "qingdao_transport_001_chunk_0001",
+      "doc_id": "qingdao_transport_001",
+      "title": "青岛交通出行指南",
+      "city": "青岛",
+      "category": "transport",
+      "tags": [
+        "机场",
+        "高铁",
+        "地铁",
+        "公交",
+        "海滨步道"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "qingdao_tips_001_chunk_0001",
+      "doc_id": "qingdao_tips_001",
+      "title": "青岛旅行实用建议",
+      "city": "青岛",
+      "category": "tips",
+      "tags": [
+        "季节",
+        "暑期限流",
+        "防晒",
+        "海鲜食用",
+        "预算"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "changsha_overview_001_chunk_0001",
+      "doc_id": "changsha_overview_001",
+      "title": "长沙旅行整体特点",
+      "city": "长沙",
+      "category": "overview",
+      "tags": [
+        "美食",
+        "娱乐",
+        "历史",
+        "湘江",
+        "烟火气"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "changsha_attractions_001_chunk_0001",
+      "doc_id": "changsha_attractions_001",
+      "title": "长沙核心景点推荐",
+      "city": "长沙",
+      "category": "attractions",
+      "tags": [
+        "岳麓山",
+        "橘子洲",
+        "湖南省博物馆",
+        "太平街",
+        "五一广场"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "changsha_food_001_chunk_0001",
+      "doc_id": "changsha_food_001",
+      "title": "长沙特色美食体验",
+      "city": "长沙",
+      "category": "food",
+      "tags": [
+        "湘菜",
+        "臭豆腐",
+        "长沙米粉",
+        "口味虾",
+        "茶颜悦色"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "changsha_itinerary_001_chunk_0001",
+      "doc_id": "changsha_itinerary_001",
+      "title": "长沙三日经典路线建议",
+      "city": "长沙",
+      "category": "itinerary",
+      "tags": [
+        "三日游",
+        "美食之旅",
+        "文化探访",
+        "都市休闲"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "changsha_transport_001_chunk_0001",
+      "doc_id": "changsha_transport_001",
+      "title": "长沙交通出行指南",
+      "city": "长沙",
+      "category": "transport",
+      "tags": [
+        "机场",
+        "高铁",
+        "地铁",
+        "公交",
+        "共享单车"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "changsha_tips_001_chunk_0001",
+      "doc_id": "changsha_tips_001",
+      "title": "长沙旅行实用建议",
+      "city": "长沙",
+      "category": "tips",
+      "tags": [
+        "季节",
+        "辣度",
+        "夜生活",
+        "预算",
+        "防暑"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "wuhan_overview_001_chunk_0001",
+      "doc_id": "wuhan_overview_001",
+      "title": "武汉旅行整体特点",
+      "city": "武汉",
+      "category": "overview",
+      "tags": [
+        "江城",
+        "樱花",
+        "黄鹤楼",
+        "过早",
+        "湖光"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "wuhan_attractions_001_chunk_0001",
+      "doc_id": "wuhan_attractions_001",
+      "title": "武汉核心景点推荐",
+      "city": "武汉",
+      "category": "attractions",
+      "tags": [
+        "黄鹤楼",
+        "武汉大学",
+        "东湖",
+        "江汉路",
+        "湖北省博物馆"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "wuhan_food_001_chunk_0001",
+      "doc_id": "wuhan_food_001",
+      "title": "武汉特色美食体验",
+      "city": "武汉",
+      "category": "food",
+      "tags": [
+        "热干面",
+        "三鲜豆皮",
+        "鸭脖",
+        "汤包",
+        "过早"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "wuhan_itinerary_001_chunk_0001",
+      "doc_id": "wuhan_itinerary_001",
+      "title": "武汉三日经典路线建议",
+      "city": "武汉",
+      "category": "itinerary",
+      "tags": [
+        "三日游",
+        "樱花季",
+        "江城风貌",
+        "历史文化"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "wuhan_transport_001_chunk_0001",
+      "doc_id": "wuhan_transport_001",
+      "title": "武汉交通出行指南",
+      "city": "武汉",
+      "category": "transport",
+      "tags": [
+        "机场",
+        "高铁",
+        "地铁",
+        "轮渡",
+        "跨江桥梁"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "wuhan_tips_001_chunk_0001",
+      "doc_id": "wuhan_tips_001",
+      "title": "武汉旅行实用建议",
+      "city": "武汉",
+      "category": "tips",
+      "tags": [
+        "季节",
+        "樱花季",
+        "交通规划",
+        "预算",
+        "防雨"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "kunming_overview_001_chunk_0001",
+      "doc_id": "kunming_overview_001",
+      "title": "昆明旅行整体特点",
+      "city": "昆明",
+      "category": "overview",
+      "tags": [
+        "春城",
+        "鲜花",
+        "高原",
+        "民族风情",
+        "阳光"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "kunming_attractions_001_chunk_0001",
+      "doc_id": "kunming_attractions_001",
+      "title": "昆明核心景点推荐",
+      "city": "昆明",
+      "category": "attractions",
+      "tags": [
+        "滇池",
+        "翠湖",
+        "石林",
+        "云南民族村",
+        "斗南花市"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "kunming_food_001_chunk_0001",
+      "doc_id": "kunming_food_001",
+      "title": "昆明特色美食体验",
+      "city": "昆明",
+      "category": "food",
+      "tags": [
+        "过桥米线",
+        "汽锅鸡",
+        "野生菌",
+        "饵块",
+        "鲜花饼"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "kunming_itinerary_001_chunk_0001",
+      "doc_id": "kunming_itinerary_001",
+      "title": "昆明三日经典路线建议",
+      "city": "昆明",
+      "category": "itinerary",
+      "tags": [
+        "三日游",
+        "春城休闲",
+        "民族文化",
+        "自然奇观"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "kunming_transport_001_chunk_0001",
+      "doc_id": "kunming_transport_001",
+      "title": "昆明交通出行指南",
+      "city": "昆明",
+      "category": "transport",
+      "tags": [
+        "机场",
+        "高铁",
+        "地铁",
+        "公交",
+        "旅游专线"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "kunming_tips_001_chunk_0001",
+      "doc_id": "kunming_tips_001",
+      "title": "昆明旅行实用建议",
+      "city": "昆明",
+      "category": "tips",
+      "tags": [
+        "季节",
+        "紫外线",
+        "海拔",
+        "预算",
+        "鲜花采购"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "sanya_overview_001_chunk_0001",
+      "doc_id": "sanya_overview_001",
+      "title": "三亚旅行整体特点",
+      "city": "三亚",
+      "category": "overview",
+      "tags": [
+        "热带",
+        "海滩",
+        "度假",
+        "海鲜",
+        "椰风海韵"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "sanya_attractions_001_chunk_0001",
+      "doc_id": "sanya_attractions_001",
+      "title": "三亚核心景点推荐",
+      "city": "三亚",
+      "category": "attractions",
+      "tags": [
+        "亚龙湾",
+        "蜈支洲岛",
+        "天涯海角",
+        "南海观音",
+        "海棠湾"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "sanya_food_001_chunk_0001",
+      "doc_id": "sanya_food_001",
+      "title": "三亚特色美食体验",
+      "city": "三亚",
+      "category": "food",
+      "tags": [
+        "海鲜",
+        "椰子鸡",
+        "文昌鸡",
+        "清补凉",
+        "热带水果"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "sanya_itinerary_001_chunk_0001",
+      "doc_id": "sanya_itinerary_001",
+      "title": "三亚三日经典路线建议",
+      "city": "三亚",
+      "category": "itinerary",
+      "tags": [
+        "三日游",
+        "海岛度假",
+        "免税购物",
+        "休闲慢行"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "sanya_transport_001_chunk_0001",
+      "doc_id": "sanya_transport_001",
+      "title": "三亚交通出行指南",
+      "city": "三亚",
+      "category": "transport",
+      "tags": [
+        "机场",
+        "高铁",
+        "公交",
+        "租车",
+        "出租车"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "sanya_tips_001_chunk_0001",
+      "doc_id": "sanya_tips_001",
+      "title": "三亚旅行实用建议",
+      "city": "三亚",
+      "category": "tips",
+      "tags": [
+        "防晒",
+        "旅游旺季",
+        "海鲜挑选",
+        "预算",
+        "防骗"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "tokyo_overview_001_chunk_0001",
+      "doc_id": "tokyo_overview_001",
+      "title": "东京旅行整体特点",
+      "city": "东京",
+      "category": "overview",
+      "tags": [
+        "都市",
+        "和风",
+        "美食",
+        "购物",
+        "二次元"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "tokyo_attractions_001_chunk_0001",
+      "doc_id": "tokyo_attractions_001",
+      "title": "东京核心景点推荐",
+      "city": "东京",
+      "category": "attractions",
+      "tags": [
+        "浅草寺",
+        "涩谷",
+        "新宿",
+        "东京塔",
+        "秋叶原"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "tokyo_food_001_chunk_0001",
+      "doc_id": "tokyo_food_001",
+      "title": "东京特色美食体验",
+      "city": "东京",
+      "category": "food",
+      "tags": [
+        "寿司",
+        "拉面",
+        "天妇罗",
+        "和牛",
+        "居酒屋"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "tokyo_itinerary_001_chunk_0001",
+      "doc_id": "tokyo_itinerary_001",
+      "title": "东京三日经典路线建议",
+      "city": "东京",
+      "category": "itinerary",
+      "tags": [
+        "三日游",
+        "都市探索",
+        "传统文化",
+        "现代潮流"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "tokyo_transport_001_chunk_0001",
+      "doc_id": "tokyo_transport_001",
+      "title": "东京交通出行指南",
+      "city": "东京",
+      "category": "transport",
+      "tags": [
+        "成田机场",
+        "羽田机场",
+        "JR",
+        "地铁",
+        "新干线"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    },
+    {
+      "chunk_id": "tokyo_tips_001_chunk_0001",
+      "doc_id": "tokyo_tips_001",
+      "title": "东京旅行实用建议",
+      "city": "东京",
+      "category": "tips",
+      "tags": [
+        "季节",
+        "礼仪",
+        "免税购物",
+        "预算",
+        "厕所文化"
+      ],
+      "source": "D:\\AgentProject\\TRAVELAGENT\\data\\raw\\static\\travel_knowledge.json",
+      "updated_at": "2026-07-02"
+    }
+  ]
+}

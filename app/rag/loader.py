@@ -43,8 +43,7 @@ class VectorStore:
         self.index_meta_path.parent.mkdir(parents=True, exist_ok=True)
         faiss.write_index(self.index, str(self.index_path))
 
-        with open(self.chunks_path, "w", encoding="utf-8") as file:
-            json.dump(self.chunks, file, ensure_ascii=False, indent=2)
+        self._write_chunks()
 
         if index_meta is not None:
             self.index_meta = index_meta
@@ -57,8 +56,7 @@ class VectorStore:
         self.index_meta = {}
 
         if self.chunks_path.exists():
-            with open(self.chunks_path, "r", encoding="utf-8") as file:
-                self.chunks = json.load(file)
+            self.chunks = self._read_chunks()
         else:
             logger.warning("[RAG] chunks 文件不存在：%s", self.chunks_path)
 
@@ -76,6 +74,27 @@ class VectorStore:
                 self.index = None
         else:
             logger.warning("[RAG] FAISS index 文件不存在，将按关键词检索降级：%s", self.index_path)
+
+    def _read_chunks(self) -> list[dict | str]:
+        if self.chunks_path.suffix.lower() == ".jsonl":
+            chunks: list[dict | str] = []
+            with open(self.chunks_path, "r", encoding="utf-8") as file:
+                for line in file:
+                    line = line.strip()
+                    if line:
+                        chunks.append(json.loads(line))
+            return chunks
+
+        with open(self.chunks_path, "r", encoding="utf-8") as file:
+            return json.load(file)
+
+    def _write_chunks(self) -> None:
+        with open(self.chunks_path, "w", encoding="utf-8") as file:
+            if self.chunks_path.suffix.lower() == ".jsonl":
+                for chunk in self.chunks:
+                    file.write(json.dumps(chunk, ensure_ascii=False) + "\n")
+            else:
+                json.dump(self.chunks, file, ensure_ascii=False, indent=2)
 
     def search(self, query_vector: np.ndarray, top_k: int = 3) -> list[dict]:
         if self.index is None:
@@ -122,6 +141,19 @@ def load_knowledge_items(path: Path = settings.knowledge_json_path) -> list[dict
 
 
 def load_vector_store() -> VectorStore:
-    store = VectorStore()
+    if settings.new_index_path.exists() and settings.chunks_jsonl_path.exists() and settings.new_index_meta_path.exists():
+        index_path = settings.new_index_path
+        chunks_path = settings.chunks_jsonl_path
+        index_meta_path = settings.new_index_meta_path
+    else:
+        index_path = settings.index_path
+        chunks_path = settings.chunks_path
+        index_meta_path = settings.index_meta_path
+
+    store = VectorStore(
+        index_path=index_path,
+        chunks_path=chunks_path,
+        index_meta_path=index_meta_path,
+    )
     store.load()
     return store

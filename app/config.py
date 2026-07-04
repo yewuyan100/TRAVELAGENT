@@ -68,7 +68,10 @@ class Settings:
     llm_model: str = get_env("LLM_MODEL", get_env("DEEPSEEK_MODEL", "deepseek-v4-flash")) or "deepseek-v4-flash"
 
     embedding_provider: str = get_env("EMBEDDING_PROVIDER", "dashscope") or "dashscope"
-    embedding_api_key: str | None = get_env("EMBEDDING_API_KEY")
+    embedding_api_key: str | None = get_env(
+        "EMBEDDING_API_KEY",
+        get_env("DASHSCOPE_API_KEY", get_env("QWEN_API_KEY", get_env("BAILIAN_API_KEY"))),
+    )
     embedding_base_url: str | None = get_env("EMBEDDING_API_BASE_URL", get_env("EMBEDDING_BASE_URL"))
     embedding_model: str = get_env("EMBEDDING_API_MODEL", get_env("EMBEDDING_MODEL", "text-embedding-v4")) or "text-embedding-v4"
     embedding_dimension: int = get_int_env("EMBEDDING_DIMENSION", 1024)
@@ -80,6 +83,38 @@ class Settings:
         "KNOWLEDGE_PATH",
         "KNOWLEDGE_JSON_PATH",
         default=PROJECT_ROOT / "data" / "knowledge" / "travel_knowledge.json",
+    )
+    raw_static_dir: Path = get_path_env(
+        "KNOWLEDGE_RAW_STATIC_DIR",
+        default=PROJECT_ROOT / "data" / "raw" / "static",
+    )
+    raw_dynamic_dir: Path = get_path_env(
+        "KNOWLEDGE_RAW_DYNAMIC_DIR",
+        default=PROJECT_ROOT / "data" / "raw" / "dynamic",
+    )
+    raw_static_knowledge_path: Path = get_path_env(
+        "KNOWLEDGE_RAW_STATIC_PATH",
+        default=PROJECT_ROOT / "data" / "raw" / "static" / "travel_knowledge.json",
+    )
+    processed_documents_path: Path = get_path_env(
+        "PROCESSED_DOCUMENTS_PATH",
+        default=PROJECT_ROOT / "data" / "processed" / "documents.jsonl",
+    )
+    processed_manifest_path: Path = get_path_env(
+        "PROCESSED_MANIFEST_PATH",
+        default=PROJECT_ROOT / "data" / "processed" / "manifest.json",
+    )
+    chunks_jsonl_path: Path = get_path_env(
+        "RAG_CHUNKS_JSONL_PATH",
+        default=PROJECT_ROOT / "data" / "chunks" / "chunks.jsonl",
+    )
+    new_index_path: Path = get_path_env(
+        "RAG_INDEX_PATH",
+        default=PROJECT_ROOT / "data" / "index" / "travel.index",
+    )
+    new_index_meta_path: Path = get_path_env(
+        "RAG_INDEX_META_PATH",
+        default=PROJECT_ROOT / "data" / "index" / "index_metadata.json",
     )
     index_path: Path = get_path_env(
         "FAISS_INDEX_PATH",
@@ -109,7 +144,10 @@ class Settings:
 
     rerank_enable: bool = get_bool_env("RERANK_ENABLE", True)
     rerank_provider: str = get_env("RERANK_PROVIDER", "dashscope") or "dashscope"
-    rerank_api_key: str | None = get_env("RERANK_API_KEY", get_env("EMBEDDING_API_KEY"))
+    rerank_api_key: str | None = get_env(
+        "RERANK_API_KEY",
+        get_env("EMBEDDING_API_KEY", get_env("DASHSCOPE_API_KEY", get_env("QWEN_API_KEY", get_env("BAILIAN_API_KEY")))),
+    )
     rerank_base_url: str | None = get_env("RERANK_API_BASE_URL")
     rerank_model: str = get_env("RERANK_MODEL", "qwen3-rerank") or "qwen3-rerank"
     rerank_top_k: int = get_int_env("RERANK_TOP_K", 20)

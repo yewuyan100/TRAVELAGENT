@@ -30,7 +30,7 @@ def source_refs_from_results(results: list[dict]) -> list[SourceRef]:
         score = float(result.get("final_score", result.get("rerank_score", result.get("score", 0.0))) or 0.0)
         rerank_score = result.get("rerank_score")
         source = SourceRef(
-            id=str(metadata.get("id", "")) or None,
+            id=str(metadata.get("id") or metadata.get("doc_id") or "") or None,
             title=title,
             city=metadata.get("city"),
             country=metadata.get("country"),
@@ -40,7 +40,7 @@ def source_refs_from_results(results: list[dict]) -> list[SourceRef]:
             bm25_score=_optional_float(result.get("bm25_score")),
             rerank_score=_optional_float(rerank_score),
             content=result.get("chunk"),
-            source_url=metadata.get("source_url"),
+            source_url=metadata.get("source_url") or metadata.get("source"),
             freshness=metadata.get("freshness"),
             tags=[str(tag) for tag in tags],
         )
@@ -140,7 +140,18 @@ class RAGPipeline:
             )
 
         prompt = build_prompt(contexts=contexts, question=question, sources=sources)
-        answer = self.generator.generate(prompt)
+        try:
+            answer = self.generator.generate(prompt)
+        except Exception as exc:
+            logger.warning("[RAG] LLM 生成失败，保留召回证据并返回降级回答：%s", exc)
+            return RAGResult(
+                answer=f"{UNCERTAIN_ANSWER}\n已召回相关资料，但生成模型暂时不可用：{exc}",
+                query_type=report.analysis.question_type,
+                confident=False,
+                refusal_reason="LLM 生成失败",
+                sources=sources,
+                diagnostics=self._diagnostics(report),
+            )
         return RAGResult(
             answer=append_sources(answer, sources),
             query_type=report.analysis.question_type,

@@ -1,0 +1,18 @@
+{
+  "id": "chengdu_attractions_static_001",
+  "city": "成都",
+  "province": "四川",
+  "country": "中国",
+  "category": "attractions",
+  "title": "成都经典景点推荐",
+  "tags": ["熊猫基地", "武侯祠", "锦里", "宽窄巷子"],
+  "suitable_for": ["第一次来成都", "亲子游", "文化体验"],
+  "duration": "1-2天",
+  "best_season": "春秋",
+  "source_type": "self_curated",
+  "source_url": "",
+  "license": "self_curated",
+  "updated_at": "2026-07-04",
+  "review_status": "pending",
+  "content": "这里填写面向旅行规划的知识正文，要求事实清楚、可检索、可被行程规划器结构化使用。"
+}
