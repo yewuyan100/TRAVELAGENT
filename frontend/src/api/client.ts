@@ -1,7 +1,18 @@
-﻿import axios from "axios";
+import axios from "axios";
+
+const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
+function normalizeApiBaseUrl(value: string | undefined): string | undefined {
+  const trimmed = value?.trim();
+  if (!trimmed) return undefined;
+  if (!import.meta.env.DEV && /^(https?:\/\/)?0\.0\.0\.0(?::\d+)?(\/.*)?$/.test(trimmed)) {
+    return "";
+  }
+  return trimmed;
+}
 
 export const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
+  normalizeApiBaseUrl(configuredApiBaseUrl) || (import.meta.env.DEV ? "http://127.0.0.1:8000" : "");
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
